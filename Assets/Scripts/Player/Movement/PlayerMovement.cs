@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump Properties")]
     [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCooldown;
+    [SerializeField] private bool canJump;
     [SerializeField] bool _jump;
 
     [Header("Debug")]
@@ -39,6 +41,16 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private PlayerControls playerControl;
+
+    #endregion
+
+    #region Getter / Setter
+
+    /// <summary>
+    /// Get is Sprinting Status
+    /// </summary>
+    /// <returns></returns>
+    public bool GetIsSprinting() { return isSprinting; }
 
     #endregion
 
@@ -54,16 +66,15 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         GetInputs();
+        Sprint();
         Grounded = isGrounded();
     }
 
     private void FixedUpdate()
     {
-        Sprint();
         Movement();
         RbDrag();
         Jump();
@@ -72,12 +83,14 @@ public class PlayerMovement : MonoBehaviour
 
     #region Inputs
 
+    /// <summary>
+    /// Get Player Inputs
+    /// </summary>
     private void GetInputs()
     {
         movementInput = playerControl.Movement.Movement.ReadValue<Vector2>();
 
         _jump = playerControl.Movement.Jump.IsInProgress();
-        isSprinting = playerControl.Movement.Sprint.IsPressed();
     }
 
     #endregion
@@ -86,23 +99,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Sprint()
     {
-        if (movementInput != Vector2.zero)
+        if (playerControl.Movement.Sprint.IsPressed() && isMovingForward(movementInput))
         {
-            if (isSprinting && isMovingForward(movementInput))
-            {
-                isSprinting = true;
-                maxSpeed = runSpeed;
-                actualSpeed = Mathf.Lerp(actualSpeed, runSpeed, moveSpeedChange * Time.fixedDeltaTime); //Reconcile
-            }
-            else
-            {
-                isSprinting = false;
-                maxSpeed = walkSpeed;
-                actualSpeed = Mathf.Lerp(actualSpeed, walkSpeed, moveSpeedChange * Time.fixedDeltaTime); //Reconcile
-            }
+            isSprinting = true;
+            maxSpeed = runSpeed;
+            actualSpeed = Mathf.Lerp(actualSpeed, runSpeed, moveSpeedChange * Time.deltaTime); //Reconcile
         }
         else
-            actualSpeed = 0;
+        {
+            isSprinting = false;
+            maxSpeed = walkSpeed;
+            actualSpeed = Mathf.Lerp(actualSpeed, walkSpeed, moveSpeedChange * Time.deltaTime); //Reconcile
+        }
     }
 
     private void Movement()
@@ -126,11 +134,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (_jump && isGrounded())
+        if (_jump && isGrounded() && canJump)
         {
+            rb.velocity = new Vector3 (rb.velocity.x, 0f, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            canJump = false;
             _jump = false;
+
+            StartCoroutine(jumpCoroutine());
         }
+    }
+
+    private IEnumerator jumpCoroutine()
+    {
+        yield return new WaitForSeconds(jumpCooldown);
+
+        canJump = true;
     }
 
     private void RbDrag()

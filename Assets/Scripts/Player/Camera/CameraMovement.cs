@@ -6,10 +6,13 @@ public class CameraMovement : MonoBehaviour
 {
     [Header("Camera Properties")]
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private Transform cameraHolderTransform;
+
+    [Header("Camera FOV")]
     [SerializeField] private float walkFOV;
     [SerializeField] private float runFOV;
     [SerializeField] private float actualFOV;
-    [SerializeField] private Transform cameraHolderTransform;
+    [SerializeField] private float fovChangeSpeed;
 
     [Header("Mouse Properties")]
     [SerializeField] private float sensX;
@@ -17,6 +20,9 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private Vector2 mouseLook;
     float xRotation;
     float yRotation;
+
+    [Header("Scripts References")]
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Space]
 
@@ -36,12 +42,16 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         GetInputs();
+        DynamicFOV();
         CameraLook();
         RotatePlayer();
     }
 
     #region Inputs
 
+    /// <summary>
+    /// Get Player Inputs
+    /// </summary>
     private void GetInputs()
     {
         mouseLook = playerControls.Camera.CameraLook.ReadValue<Vector2>();
@@ -49,6 +59,11 @@ public class CameraMovement : MonoBehaviour
 
     #endregion
 
+    #region Camera Movement
+
+    /// <summary>
+    /// Move Camera by players input
+    /// </summary>
     private void CameraLook()
     {
         if (mouseLook != Vector2.zero)
@@ -64,6 +79,21 @@ public class CameraMovement : MonoBehaviour
             mainCamera.transform.rotation = cameraHolderTransform.rotation;
         }
     }
+
+    /// <summary>
+    /// Change FOV dynamically by the sprint status
+    /// </summary>
+    private void DynamicFOV()
+    {
+        if (playerMovement.GetIsSprinting())
+            actualFOV = Mathf.Lerp(actualFOV, runFOV, fovChangeSpeed * Time.deltaTime);
+        else
+            actualFOV = Mathf.Lerp(actualFOV, walkFOV, fovChangeSpeed * Time.deltaTime);
+
+        mainCamera.fieldOfView = actualFOV;
+    }
+
+    #endregion
 
     private void RotatePlayer()
     {

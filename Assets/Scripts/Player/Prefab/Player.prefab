@@ -92,13 +92,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  walkFOV: 0
-  runFOV: 0
-  actualFOV: 0
   cameraHolderTransform: {fileID: 8532955938809169943}
+  walkFOV: 50
+  runFOV: 60
+  actualFOV: 0
+  fovChangeSpeed: 5
   sensX: 0.3
   sensY: 0.3
   mouseLook: {x: 0, y: 0}
+  playerMovement: {fileID: 1498545310983833610}
   playerTransform: {fileID: 8433458462590697323}
 --- !u!1 &4583946984068135053
 GameObject:
@@ -118,7 +120,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6649722639824691508
 Transform:
   m_ObjectHideFlags: 0
@@ -339,7 +341,7 @@ GameObject:
   - component: {fileID: 1498545310983833610}
   - component: {fileID: 8986451387648874485}
   - component: {fileID: 8673706117670094853}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,8 +393,10 @@ MonoBehaviour:
     m_Bits: 8
   groundDrag: 4
   airDrag: 2
-  airControlReducer: 0.4
-  jumpForce: 3
+  airControlReducer: 0.2
+  jumpForce: 5
+  jumpCooldown: 1
+  canJump: 1
   _jump: 0
   movementInput: {x: 0, y: 0}
   moveDirection: {x: 0, y: 0, z: 0}

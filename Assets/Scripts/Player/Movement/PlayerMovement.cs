@@ -65,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Sprint();
         Movement();
+        RbDrag();
         Jump();
         LimitVelocity();
     }
@@ -130,6 +131,12 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             _jump = false;
         }
+    }
+
+    private void RbDrag()
+    {
+        if (isGrounded()) rb.drag = groundDrag;
+        else rb.drag = airDrag;
     }
 
     private void LimitVelocity()

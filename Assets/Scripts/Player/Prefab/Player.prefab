@@ -96,8 +96,8 @@ MonoBehaviour:
   runFOV: 0
   actualFOV: 0
   cameraHolderTransform: {fileID: 8532955938809169943}
-  sensX: 5
-  sensY: 5
+  sensX: 0.3
+  sensY: 0.3
   mouseLook: {x: 0, y: 0}
   playerTransform: {fileID: 8433458462590697323}
 --- !u!1 &4583946984068135053
@@ -118,7 +118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6649722639824691508
 Transform:
   m_ObjectHideFlags: 0

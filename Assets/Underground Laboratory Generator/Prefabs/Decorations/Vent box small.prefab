@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5876818277105208496}
   - component: {fileID: 767913628941847759}
   - component: {fileID: 3475147139603852049}
-  - component: {fileID: 7639114947045758064}
   - component: {fileID: 7639114947045758067}
   m_Layer: 0
   m_Name: Vent box small
@@ -30,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 15.235117, y: 0.58635664, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,10 +53,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -81,28 +83,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7639114947045758064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7639114947045758066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7939606da92c0a48afb3b69f7670dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableChance: 1
-  CreateChance: 60
-  EnableChildrensDestroy: 0
-  ChildrensLeft: 1
-  EnableAlbedoRandom: 1
-  Colors:
-  - {r: 1, g: 0.9009434, b: 0.9009434, a: 1}
-  - {r: 0.9161581, g: 1, b: 0.9019608, a: 1}
-  - {r: 0.9049057, g: 0.9019608, b: 1, a: 1}
-  - {r: 1, g: 0.99964947, b: 0.9019608, a: 1}
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &7639114947045758067
 BoxCollider:
   m_ObjectHideFlags: 0

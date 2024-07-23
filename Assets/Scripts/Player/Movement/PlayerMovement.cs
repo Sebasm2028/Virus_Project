@@ -9,11 +9,26 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Properties")]
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
+    [SerializeField] private float crouchSpeed;
     [SerializeField] private float moveMultiplier;
     [SerializeField] private float moveSpeedChange;
     [SerializeField] private float actualSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private bool isSprinting;
+    private MovementState movementState;
+
+    [Header("Jump Properties")]
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCooldown;
+    [SerializeField] private bool canJump;
+    [SerializeField] bool _jump;
+
+    [Header("Crouch Properties")]
+    [SerializeField] private float crouchMultiplier;
+    [SerializeField] private bool isCrouching;
+    [SerializeField] private float crouchCooldown;
+    [SerializeField] private bool canCrouch;
+    private Vector3 defaultLocalScale;
 
     [Header("GroundCheck Properties")]
     [SerializeField] private Transform groundCheck;
@@ -26,11 +41,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float airDrag;
     [SerializeField] private float airControlReducer;
 
-    [Header("Jump Properties")]
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float jumpCooldown;
-    [SerializeField] private bool canJump;
-    [SerializeField] bool _jump;
 
     [Header("Debug")]
     [SerializeField] private Vector2 movementInput;
@@ -52,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     public bool GetIsSprinting() { return isSprinting; }
 
+    public MovementState GetMovementState() { return movementState; }
+
+    public Rigidbody GetPlayerRB() { return rb; }
+
     #endregion
 
     private void Awake()
@@ -59,17 +73,16 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerControl = new PlayerControls();
         playerControl.Movement.Enable();
-    }
 
-    void Start()
-    {
-        
+        defaultLocalScale = transform.localScale;
     }
 
     void Update()
     {
         GetInputs();
+        Crouch();
         Sprint();
+        SpeedManager();
         Grounded = isGrounded();
     }
 
@@ -79,6 +92,8 @@ public class PlayerMovement : MonoBehaviour
         RbDrag();
         Jump();
         LimitVelocity();
+
+        rb.AddForce(Physics.gravity * 3f); //Add extra gravity
     }
 
     #region Inputs
@@ -101,15 +116,38 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerControl.Movement.Sprint.IsPressed() && isMovingForward(movementInput))
         {
+            if (isCrouching) return;
+
             isSprinting = true;
-            maxSpeed = runSpeed;
-            actualSpeed = Mathf.Lerp(actualSpeed, runSpeed, moveSpeedChange * Time.deltaTime); //Reconcile
         }
         else
         {
             isSprinting = false;
-            maxSpeed = walkSpeed;
-            actualSpeed = Mathf.Lerp(actualSpeed, walkSpeed, moveSpeedChange * Time.deltaTime); //Reconcile
+        }
+    }
+
+    private void SpeedManager()
+    {
+        if (isCrouching)
+        {
+            maxSpeed = crouchSpeed;
+            movementState = MovementState.crouching;
+            actualSpeed = Mathf.Lerp(actualSpeed, crouchSpeed, moveSpeedChange * Time.deltaTime);
+        }
+        else
+        {
+            if (isSprinting)
+            {
+                maxSpeed = runSpeed;
+                movementState = MovementState.sprinting;
+                actualSpeed = Mathf.Lerp(actualSpeed, runSpeed, moveSpeedChange * Time.deltaTime);
+            }
+            else
+            {
+                maxSpeed = walkSpeed;
+                movementState = MovementState.walking;
+                actualSpeed = Mathf.Lerp(actualSpeed, walkSpeed, moveSpeedChange * Time.deltaTime);
+            }
         }
     }
 
@@ -132,6 +170,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private IEnumerator jumpCoroutine()
+    {
+        yield return new WaitForSeconds(jumpCooldown);
+
+        canJump = true;
+    }
+
     private void Jump()
     {
         if (_jump && isGrounded() && canJump)
@@ -145,11 +190,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator jumpCoroutine()
+    private IEnumerator crouchCoroutine()
     {
-        yield return new WaitForSeconds(jumpCooldown);
+        yield return new WaitForSeconds(crouchCooldown);
+        canCrouch = true;
+    }
 
-        canJump = true;
+    private void Crouch()
+    {
+        if (playerControl.Movement.Crouch.WasPressedThisFrame() && canCrouch)
+        {
+            isCrouching = true;
+            canCrouch = false;
+
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * crouchMultiplier, transform.localScale.z);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        }
+
+        if (playerControl.Movement.Crouch.WasReleasedThisFrame() && isCrouching)
+        {
+            isCrouching = false;
+            transform.localScale = defaultLocalScale;
+
+            StartCoroutine(crouchCoroutine());
+        }
     }
 
     private void RbDrag()

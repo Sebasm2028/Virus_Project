@@ -5775,6 +5775,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3906381344705512442, guid: ef58be31bee86a4489a16b10d61ee4e3, type: 3}
+      propertyPath: Colors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906381344705512442, guid: ef58be31bee86a4489a16b10d61ee4e3, type: 3}
+      propertyPath: Colors.Array.data[0].b
+      value: 0.012548926
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906381344705512442, guid: ef58be31bee86a4489a16b10d61ee4e3, type: 3}
+      propertyPath: Colors.Array.data[0].g
+      value: 0.16495717
+      objectReference: {fileID: 0}
+    - target: {fileID: 3906381344705512442, guid: ef58be31bee86a4489a16b10d61ee4e3, type: 3}
+      propertyPath: Colors.Array.data[0].r
+      value: 0.8867924
+      objectReference: {fileID: 0}
     - target: {fileID: 5137147605274358989, guid: ef58be31bee86a4489a16b10d61ee4e3, type: 3}
       propertyPath: m_Name
       value: Wires clrs

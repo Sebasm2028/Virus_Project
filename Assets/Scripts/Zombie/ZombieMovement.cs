@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ public class ZombieMovement : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Collider rbCollider;
 
     [Header("Nav Agent Properties")]
     [SerializeField] private Transform target;
@@ -24,15 +26,28 @@ public class ZombieMovement : MonoBehaviour
     [Header("Player Interactions")]
     [SerializeField] private float distanceThreeshold;
 
-    #region Getter / Setter
+    [Header("Script References")]
+    [SerializeField] private ZombieStats stats;
 
+    #region Getter / Setter
 
     public NavMeshAgent GetAgent() { return agent; }
 
     public Transform GetTarget() { return target; }
+
     public void SetTarget(Transform target) { this.target = target; }
 
     #endregion
+
+    private void Start()
+    {
+        stats.OnZombieDie += OnZombieDied;
+    }
+
+    private void OnDisable()
+    {
+        stats.OnZombieDie -= OnZombieDied;
+    }
 
     // Update is called once per frame
     void Update()
@@ -111,4 +126,12 @@ public class ZombieMovement : MonoBehaviour
     }
 
     #endregion
+
+    private void OnZombieDied()
+    {
+        agent.isStopped = true;
+
+        rbCollider.enabled = false;
+        this.enabled = false;
+    }
 }

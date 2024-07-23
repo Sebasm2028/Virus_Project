@@ -199,6 +199,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4977052305048425277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1407364155569790780}
+  m_Layer: 0
+  m_Name: Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1407364155569790780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4977052305048425277}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8433458462590697323}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7483890975011253899
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7483890975011253899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.68, z: 0}
+  m_LocalPosition: {x: 0, y: -0.579, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -339,6 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8433458462590697323}
   - component: {fileID: 1498545310983833610}
+  - component: {fileID: 6851926010423542975}
   - component: {fileID: 8986451387648874485}
   - component: {fileID: 8673706117670094853}
   m_Layer: 7
@@ -363,6 +395,7 @@ Transform:
   - {fileID: 3920198593744415472}
   - {fileID: 1142626204962136778}
   - {fileID: 6240771055085711406}
+  - {fileID: 1407364155569790780}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -380,11 +413,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 4
   runSpeed: 6
+  crouchSpeed: 3
   moveMultiplier: 10
   moveSpeedChange: 4
   actualSpeed: 0
   maxSpeed: 0
   isSprinting: 0
+  jumpForce: 10
+  jumpCooldown: 1
+  canJump: 1
+  _jump: 0
+  crouchMultiplier: 0.5
+  isCrouching: 0
+  crouchCooldown: 0.25
+  canCrouch: 1
   groundCheck: {fileID: 1142626204962136778}
   groundCheckBoxSize: {x: 0.86, y: 0.17, z: 0.89}
   groundRayDistance: 0.3
@@ -394,13 +436,31 @@ MonoBehaviour:
   groundDrag: 4
   airDrag: 2
   airControlReducer: 0.2
-  jumpForce: 5
-  jumpCooldown: 1
-  canJump: 1
-  _jump: 0
   movementInput: {x: 0, y: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   Grounded: 0
+--- !u!114 &6851926010423542975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742302741045533556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb75be0baaee7d4d8ffb513d86ac99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementThreeshold: 0.25
+  crouchNoise: 1
+  walkNoise: 4
+  runNoise: 8
+  actualNoise: 0
+  footTransform: {fileID: 1407364155569790780}
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  playerMovement: {fileID: 1498545310983833610}
 --- !u!54 &8986451387648874485
 Rigidbody:
   m_ObjectHideFlags: 0

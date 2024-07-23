@@ -13,12 +13,27 @@ public class ZombieAI : MonoBehaviour
     [SerializeField] private bool canSeePlayer;
     [SerializeField] private Transform playerRef;
 
+    [Header("Box of View Properties")]
+    [SerializeField] private Transform boxView;
+    [SerializeField] private Vector3 boxViewSize;
+    [SerializeField] private LayerMask playerLayer;
+
+    [Header("Forget Player Properties")]
+    [SerializeField] private float timeToForget;
+    [SerializeField] private float timeToForgetCounter;
+
     [Header("Script References")]
     [SerializeField] private ZombieMovement zombieMovement;
 
     private void Start()
     {
         StartCoroutine(FOVRoutine());
+    }
+
+    private void Update()
+    {
+        BoxOfViewCheck();
+        ForgetPlayerLocation();
     }
 
     #region AI Field of View
@@ -53,7 +68,6 @@ public class ZombieAI : MonoBehaviour
             if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
                 {
                     canSeePlayer = true;
@@ -64,10 +78,45 @@ public class ZombieAI : MonoBehaviour
                     canSeePlayer = false;
             }
             else
+            {
                 canSeePlayer = false;
+            }
         }
         else if (canSeePlayer)
             canSeePlayer = false;
+    }
+
+    /// <summary>
+    /// Box of view made to cover blind spots in the field of view
+    /// </summary>
+    private void BoxOfViewCheck()
+    {
+        Collider[] colliders = Physics.OverlapBox(boxView.position, boxViewSize, Quaternion.identity, playerLayer);
+        if (colliders.Length > 0)
+        {
+            Transform transform = colliders[0].transform;
+            canSeePlayer = true;
+            playerRef = transform;
+            zombieMovement.SetTarget(transform);
+        }
+    }
+
+    /// <summary>
+    /// Make the zombie forget the player location
+    /// </summary>
+    private void ForgetPlayerLocation()
+    {
+        if (zombieMovement.GetTarget() == null)
+        {
+            if (timeToForgetCounter != timeToForget) timeToForgetCounter = timeToForget;
+        }
+        else
+        {
+            if (canSeePlayer) timeToForgetCounter = timeToForget;
+            else timeToForgetCounter -= Time.deltaTime;
+
+            if (!canSeePlayer && timeToForgetCounter <= 0) zombieMovement.SetTarget(null);
+        }
     }
 
     #endregion
@@ -94,6 +143,9 @@ public class ZombieAI : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, playerRef.position);
         }
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(boxView.position, boxViewSize);
     }
 
     private Vector3 DirectionFromAngle(float eulerY, float angleInDegrees)

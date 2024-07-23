@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1572661501552917727}
-  - component: {fileID: 1572661501552917726}
   m_Layer: 0
   m_Name: Machine
   m_TagString: Untagged
@@ -33,24 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1572661501552917726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1572661501552917724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7939606da92c0a48afb3b69f7670dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableChance: 1
-  CreateChance: 60
-  EnableChildrensDestroy: 1
-  ChildrensLeft: 1
-  EnableAlbedoRandom: 0
-  Colors: []
 --- !u!1 &2840484423745778916
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,7 +43,6 @@ GameObject:
   - component: {fileID: 511577181952864575}
   - component: {fileID: 231983151576934210}
   - component: {fileID: 2117454817511368059}
-  - component: {fileID: 2840484423745778919}
   - component: {fileID: 2840484423745778918}
   m_Layer: 0
   m_Name: Machine 3
@@ -136,28 +116,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2840484423745778919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2840484423745778916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7939606da92c0a48afb3b69f7670dc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableChance: 0
-  CreateChance: 60
-  EnableChildrensDestroy: 0
-  ChildrensLeft: 1
-  EnableAlbedoRandom: 1
-  Colors:
-  - {r: 1, g: 0.9009434, b: 0.9009434, a: 1}
-  - {r: 0.9161581, g: 1, b: 0.9019608, a: 1}
-  - {r: 0.9049057, g: 0.9019608, b: 1, a: 1}
-  - {r: 1, g: 0.99964947, b: 0.9019608, a: 1}
 --- !u!65 &2840484423745778918
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,6 +34,7 @@ public class ZombieMovement : MonoBehaviour
     public NavMeshAgent GetAgent() { return agent; }
 
     public Transform GetTarget() { return target; }
+
     public void SetTarget(Transform target) { this.target = target; }
 
     #endregion
@@ -128,6 +130,7 @@ public class ZombieMovement : MonoBehaviour
     private void OnZombieDied()
     {
         agent.isStopped = true;
+
         rbCollider.enabled = false;
         this.enabled = false;
     }

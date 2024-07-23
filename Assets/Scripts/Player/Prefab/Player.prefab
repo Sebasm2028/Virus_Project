@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8532955938809169943}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 6240771055085711406}
   - component: {fileID: 2499144457926713188}
   - component: {fileID: 9099056081884705564}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 958475049138958350}
   - component: {fileID: 444740166106386211}
   - component: {fileID: 5100403979176844914}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1407364155569790780}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1142626204962136778}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 5087907524580511793}
   - component: {fileID: 4647098964046853559}
   - component: {fileID: 8438668472316924873}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,6 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8433458462590697323}
   - component: {fileID: 1498545310983833610}
+  - component: {fileID: 7147011254655085164}
   - component: {fileID: 6851926010423542975}
   - component: {fileID: 479027801}
   m_Layer: 7
@@ -428,7 +429,7 @@ MonoBehaviour:
   canCrouch: 1
   groundCheck: {fileID: 1142626204962136778}
   groundCheckBoxSize: {x: 0.86, y: 0.17, z: 0.89}
-  groundRayDistance: 1
+  groundRayDistance: 0.7
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -437,6 +438,25 @@ MonoBehaviour:
   movementInput: {x: 0, y: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   Grounded: 0
+--- !u!114 &7147011254655085164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742302741045533556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4af533c060efbd458680d28ce89b68d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raycastPoint: {fileID: 8532955938809169943}
+  defaultLayers:
+    serializedVersion: 2
+    m_Bits: 9
+  hitboxLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &6851926010423542975
 MonoBehaviour:
   m_ObjectHideFlags: 0

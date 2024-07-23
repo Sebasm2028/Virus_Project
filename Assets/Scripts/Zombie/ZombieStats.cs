@@ -18,11 +18,11 @@ public class ZombieStats : MonoBehaviour
 
     #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Getter / Setter
+
+    public float GetHealthPoints() {  return healthPoints; }
+
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -39,7 +39,11 @@ public class ZombieStats : MonoBehaviour
 
     private void HealthManager()
     {
-        if (healthPoints <= 0) OnZombieDie?.Invoke();
+        if (healthPoints <= 0)
+        {
+            OnZombieDie?.Invoke();
+            this.enabled = false;
+        }
     }
 
     #endregion

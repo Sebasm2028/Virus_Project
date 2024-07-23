@@ -9,13 +9,32 @@ public class ZombieSound : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        AudioManager.Instance.PlayEnemySound(zombieSound);
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player no encontrado. Asegúrate de que el objeto del jugador tenga el tag 'Player'.");
+        }
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEnemySound(zombieSound);
+        }
+        else
+        {
+            Debug.LogError("AudioManager no encontrado. Asegúrate de que el AudioManager esté presente en la escena.");
+        }
     }
 
     private void Update()
     {
-        AdjustVolumeBasedOnDistance();
+        if (player != null && AudioManager.Instance != null)
+        {
+            AdjustVolumeBasedOnDistance();
+        }
     }
 
     private void AdjustVolumeBasedOnDistance()

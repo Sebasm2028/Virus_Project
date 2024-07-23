@@ -4,7 +4,7 @@ using System.Collections;
 public class AlarmSound : MonoBehaviour
 {
     public AudioClip alarmClip;
-    public float alarmInterval = 10f; // Intervalo de 20 segundos
+    public float alarmInterval = 10f; // Intervalo de 10 segundos
 
     private Coroutine alarmCoroutine;
 

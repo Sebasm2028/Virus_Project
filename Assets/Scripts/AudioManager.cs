@@ -4,11 +4,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public AudioSource musicSource;
-    public AudioSource sfxSource;
-    public AudioSource enemySource;
-    public AudioSource playerSource; // Nuevo AudioSource para el sonido del jugador
-    public AudioSource alarmSource; // Nuevo AudioSource para la alarma
+    public AudioSource musicSource, sfxSource, enemySource, playerSource, alarmSource;
 
     private void Awake()
     {

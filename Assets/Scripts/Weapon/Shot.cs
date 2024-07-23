@@ -10,6 +10,8 @@ public class Shot : MonoBehaviour
     public float shoRate = 0.5f; //Tiempo que demora en disparar
 
     private float shotRateTime = 0;
+    public AudioClip shootSound;
+
 
     // Update is called once per frame
     void Update()
@@ -18,6 +20,7 @@ public class Shot : MonoBehaviour
         {
             if (Time.time > shotRateTime && GameManager.Instance.gunAmmo > 0)
             {
+                AudioManager.Instance.PlaySFX(shootSound);
                 GameManager.Instance.gunAmmo--;
                 GameObject newBullet;
 
@@ -26,7 +29,7 @@ public class Shot : MonoBehaviour
 
                 shotRateTime = Time.time + shoRate;
 
-                Destroy(newBullet,5);
+                Destroy(newBullet, 5);
             }
         }
     }

@@ -10,12 +10,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float crouchSpeed;
-    [SerializeField] private float moveMultiplier;
     [SerializeField] private float moveSpeedChange;
     [SerializeField] private float actualSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private bool isSprinting;
     private MovementState movementState;
+    private Vector3 velocity;
 
     [Header("Jump Properties")]
     [SerializeField] private float jumpForce;
@@ -24,7 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool _jump;
 
     [Header("Crouch Properties")]
-    [SerializeField] private float crouchMultiplier;
+    [SerializeField] private Vector3 crouchScale;
+    [SerializeField] private float crouchTime;
     [SerializeField] private bool isCrouching;
     [SerializeField] private float crouchCooldown;
     [SerializeField] private bool canCrouch;
@@ -37,10 +38,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     [Header("Gravity Settings")]
-    [SerializeField] private float groundDrag;
-    [SerializeField] private float airDrag;
+    [SerializeField] private float gravity;
     [SerializeField] private float airControlReducer;
-
 
     [Header("Debug")]
     [SerializeField] private Vector2 movementInput;
@@ -49,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     #region References
 
-    private Rigidbody rb;
+    private CharacterController controller;
     private PlayerControls playerControl;
 
     #endregion
@@ -64,13 +63,13 @@ public class PlayerMovement : MonoBehaviour
 
     public MovementState GetMovementState() { return movementState; }
 
-    public Rigidbody GetPlayerRB() { return rb; }
+    public CharacterController GetPlayerCC() { return controller; }
 
     #endregion
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
         playerControl = new PlayerControls();
         playerControl.Movement.Enable();
 
@@ -80,20 +79,14 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         GetInputs();
+        Movement();
+        Jump();
         Crouch();
         Sprint();
         SpeedManager();
+        ApplyGravity();
+
         Grounded = isGrounded();
-    }
-
-    private void FixedUpdate()
-    {
-        Movement();
-        RbDrag();
-        Jump();
-        LimitVelocity();
-
-        rb.AddForce(Physics.gravity * 3f); //Add extra gravity
     }
 
     #region Inputs
@@ -161,11 +154,11 @@ public class PlayerMovement : MonoBehaviour
 
             if (isGrounded())
             {
-                rb.AddForce(moveDirection * moveMultiplier, ForceMode.Acceleration);
+                controller.Move(moveDirection * Time.deltaTime);
             }
             else
             {
-                rb.AddForce(moveDirection * moveMultiplier * airControlReducer, ForceMode.Acceleration);
+                controller.Move(moveDirection * airControlReducer * Time.deltaTime);
             }
         }
     }
@@ -178,11 +171,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Jump()
-    {
+    {     
         if (_jump && isGrounded() && canJump)
         {
-            rb.velocity = new Vector3 (rb.velocity.x, 0f, rb.velocity.z);
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            velocity.y = Mathf.Sqrt(jumpForce * -5f * gravity);
             canJump = false;
             _jump = false;
 
@@ -190,7 +182,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator crouchCoroutine()
+    private void ApplyGravity()
+    {
+        if (isGrounded() && velocity.y < 0)
+        {
+            velocity.y = 0;
+        }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
+    }
+
+    private IEnumerator CrouchCoroutine()
     {
         yield return new WaitForSeconds(crouchCooldown);
         canCrouch = true;
@@ -202,35 +207,22 @@ public class PlayerMovement : MonoBehaviour
         {
             isCrouching = true;
             canCrouch = false;
-
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * crouchMultiplier, transform.localScale.z);
-            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
         }
 
         if (playerControl.Movement.Crouch.WasReleasedThisFrame() && isCrouching)
         {
             isCrouching = false;
-            transform.localScale = defaultLocalScale;
 
-            StartCoroutine(crouchCoroutine());
+            StartCoroutine(CrouchCoroutine());
         }
-    }
 
-    private void RbDrag()
-    {
-        if (isGrounded()) rb.drag = groundDrag;
-        else rb.drag = airDrag;
-    }
-
-    private void LimitVelocity()
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        Vector3 limitedVel = flatVel.normalized * maxSpeed;
-
-        // limit velocity if needed
-        if (flatVel.magnitude > maxSpeed)
+        if (isCrouching)
         {
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            transform.localScale = Vector3.Lerp(transform.localScale, crouchScale, crouchTime * Time.deltaTime);
+        }
+        else
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, defaultLocalScale, crouchTime * Time.deltaTime);
         }
     }
 
@@ -245,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     private bool isMovingForward(Vector2 movement)
     {
-        return movement.y > 0 && rb.velocity.magnitude > 0.1f;
+        return movement.y > 0 && controller.velocity.magnitude > 0.1f;
     }
 
     /// <summary>

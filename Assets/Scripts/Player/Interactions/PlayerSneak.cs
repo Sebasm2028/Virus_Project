@@ -31,7 +31,7 @@ public class PlayerSneak : MonoBehaviour
 
     private void TriggerZombies()
     {
-        if (playerMovement.GetPlayerRB().velocity.magnitude > movementThreeshold)
+        if (playerMovement.GetPlayerCC().velocity.magnitude >= movementThreeshold)
         {
             Collider[] colliders = Physics.OverlapSphere(footTransform.position, actualNoise, enemyLayerMask);
 

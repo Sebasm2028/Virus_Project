@@ -24,10 +24,17 @@ public class ZombieAI : MonoBehaviour
 
     [Header("Script References")]
     [SerializeField] private ZombieMovement zombieMovement;
+    [SerializeField] private ZombieStats stats;
 
     private void Start()
     {
+        stats.OnZombieDie += OnZombieDied;
         StartCoroutine(FOVRoutine());
+    }
+
+    private void OnDisable()
+    {
+        stats.OnZombieDie -= OnZombieDied;
     }
 
     private void Update()
@@ -120,6 +127,11 @@ public class ZombieAI : MonoBehaviour
     }
 
     #endregion
+
+    private void OnZombieDied()
+    {
+        this.enabled = false;
+    }
 
     #region Debug
 

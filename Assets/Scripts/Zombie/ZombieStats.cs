@@ -23,6 +23,7 @@ public class ZombieStats : MonoBehaviour
 
     public event Action OnZombieDie;
     public event Action OnZombieAttack;
+    public event Action OnZombieDamaged;
 
     #endregion
 
@@ -44,6 +45,7 @@ public class ZombieStats : MonoBehaviour
     public void Damage(float damage)
     {
         this.healthPoints -= damage;
+        OnZombieDamaged?.Invoke();
     }
 
     private void HealthManager()

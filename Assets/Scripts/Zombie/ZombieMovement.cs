@@ -15,6 +15,7 @@ public class ZombieMovement : MonoBehaviour
     [Header("Nav Agent Properties")]
     [SerializeField] private Transform target;
     [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Transform randomPoint;
 
     [Header("Patrolling Properties")]
     [SerializeField] private float minRandomMovementDelay;
@@ -42,6 +43,7 @@ public class ZombieMovement : MonoBehaviour
     private void Start()
     {
         stats.OnZombieDie += OnZombieDied;
+        stats.OnZombieDamaged += OnZombieAttacked;
     }
 
     private void OnDisable()
@@ -83,9 +85,12 @@ public class ZombieMovement : MonoBehaviour
 
                 if (agent.remainingDistance <= agent.stoppingDistance && goNextPoint)
                 {
-                    agent.SetDestination(GenerateRandomPoint(transform.position, Random.Range(minRandomMovementRange, maxRandomMovementRange)));
-                    goNextPoint = false;
-                    StartCoroutine(RandomPointEnumerator());
+                    if (randomPoint != null)
+                    {
+                        agent.SetDestination(GenerateRandomPoint(this.randomPoint.localPosition, Random.Range(minRandomMovementRange, maxRandomMovementRange)));
+                        goNextPoint = false;
+                        StartCoroutine(RandomPointEnumerator());
+                    }
                 }
             }
         }
@@ -148,6 +153,11 @@ public class ZombieMovement : MonoBehaviour
     }
 
     #endregion
+
+    private void OnZombieAttacked()
+    {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
     private void OnZombieDied()
     {

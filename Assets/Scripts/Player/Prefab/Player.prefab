@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 479027801}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  gravity: -9.81
+  gravity: -12
   velocity: {x: 0, y: 0, z: 0}
   airControlReducer: 0.7
   movementInput: {x: 0, y: 0}
@@ -541,7 +541,7 @@ MonoBehaviour:
   zombieLayer:
     serializedVersion: 2
     m_Bits: 512
-  meleeReach: 3
+  meleeReach: 2
   raycastPoint: {fileID: 8532955938809169943}
   meleeAttackCooldown: 1
   canMelee: 1

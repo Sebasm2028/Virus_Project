@@ -67,6 +67,10 @@ public class ArmsVisual : MonoBehaviour
         animator.SetBool("isMoving", playerMovement.isMoving());
     }
 
+    /// <summary>
+    /// Triggers when player attack
+    /// </summary>
+    /// <param name="type"></param>
     private void OnPlayerAttack(AttackType type)
     {
         if (type == AttackType.Fire)
@@ -76,6 +80,10 @@ public class ArmsVisual : MonoBehaviour
             animator.SetTrigger("KnifeAttack");
     }
 
+    /// <summary>
+    /// Triggers when player changes weapon
+    /// </summary>
+    /// <param name="weapon"></param>
     private void OnWeaponChanged(ActualWeapon weapon)
     {
         if (weapon == ActualWeapon.Pistol)

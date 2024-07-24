@@ -52,6 +52,7 @@ public class PlayerStats : MonoBehaviour
     public void DamagePlayer(float damage)
     {
         this.healthPoints -= damage;
+        OnPlayerDamaged?.Invoke(damage);
     }
 
     #endregion
@@ -61,6 +62,7 @@ public class PlayerStats : MonoBehaviour
     public void AddAmmo(int ammo)
     {
         this.totalAmmo += ammo;
+        OnPlayerGetsAmmo?.Invoke(ammo);
     }
 
     #endregion

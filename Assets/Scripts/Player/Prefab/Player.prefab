@@ -424,6 +424,7 @@ MonoBehaviour:
   knifeGO: {fileID: 2483634925763795511}
   playerMovement: {fileID: 1498545310983833610}
   combat: {fileID: 7147011254655085164}
+  stats: {fileID: 5235220573532733293}
 --- !u!114 &4747184824433642346
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,17 +5,15 @@ using UnityEngine.UI;
 
 public class DamageEffect : MonoBehaviour
 {
+   
     [Header("UI References")]
     [SerializeField] private Image damageOverlay; // Imagen semi-transparente para el efecto de daño
-    [SerializeField] private AudioClip damageSound; // Sonido de daño
     [SerializeField] private float fadeDuration = 0.5f; // Duración del desvanecimiento
     [SerializeField] private float damageColorAlpha = 0.5f; // Nivel de opacidad del color de daño
 
     [Header("Camera Shake")]
     [SerializeField] private CamaraShake cameraShake; // Referencia al script de movimiento de la cámara
-    [SerializeField] private float shakeDuration = 5f; // Duración del movimiento de la cámara
-
-    private AudioSource audioSource;
+    [SerializeField] private float shakeDuration = 0.5f; // Duración del movimiento de la cámara
 
     private void Start()
     {
@@ -23,12 +21,9 @@ public class DamageEffect : MonoBehaviour
         if (damageOverlay != null)
         {
             Color color = damageOverlay.color;
-            color = Color.white;
             color.a = 0f;
             damageOverlay.color = color;
         }
-
-        audioSource = GetComponent<AudioSource>();
     }
 
     public void TriggerDamageEffect()
@@ -36,11 +31,6 @@ public class DamageEffect : MonoBehaviour
         if (damageOverlay != null)
         {
             StartCoroutine(FadeDamageOverlay());
-        }
-
-        if (audioSource != null && damageSound != null)
-        {
-            audioSource.PlayOneShot(damageSound);
         }
 
         if (cameraShake != null)

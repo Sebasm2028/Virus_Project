@@ -4,8 +4,9 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public AudioSource musicSource, sfxSource, enemySource, playerSource, alarmSource;
-
+    public AudioSource musicSource, sfxSource, enemySource, playerSource, alarmSource, hurtSource;
+    public AudioSource stabbingKnifeSource; // Nuevo AudioSource para el cuchillo
+    public AudioSource shootgunSource; // Nuevo AudioSource para la pistola
     private void Awake()
     {
         if (Instance == null)
@@ -59,7 +60,28 @@ public class AudioManager : MonoBehaviour
     {
         playerSource.Stop();
     }
+    public void PlayHurtSound()
+    {
+        if (hurtSource != null)
+        {
+            hurtSource.Play();
+        }
+    }
+    public void PlayStabbingKnifeSound()
+    {
+        if (stabbingKnifeSource != null)
+        {
+            stabbingKnifeSource.Play();
+        }
+    }
 
+    public void PlayShootgunSound()
+    {
+        if (shootgunSource != null)
+        {
+            shootgunSource.Play();
+        }
+    }
     public void SetMusicVolume(float volume)
     {
         musicSource.volume = volume;

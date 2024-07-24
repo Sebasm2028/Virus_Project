@@ -13,6 +13,10 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int ammoInCartridge;
     [SerializeField] private int totalAmmo;
 
+    
+    [Header("Damage Effect")]
+    [SerializeField] private DamageEffect damageEffect;
+
     #region Events
 
     public event Action<float> OnPlayerDamaged;
@@ -55,7 +59,17 @@ public class PlayerStats : MonoBehaviour
         healthPoints -= damage;
         healthPoints = Mathf.Clamp(healthPoints, 0, maxHealthPoints);
 
-        AudioManager.Instance.PlayPlayerSound(AudioManager.Instance.playerSource.clip); // Assuming playerSource is set up for damage sound
+        // Reproducir el sonido de daño usando AudioManager
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayHurtSound(); // Reproduce el sonido de daño
+        }
+
+        // Activar el efecto de daño
+        if (damageEffect != null)
+        {
+            damageEffect.TriggerDamageEffect();
+        }
 
         OnPlayerDamaged?.Invoke(healthPoints);
     }
@@ -67,7 +81,7 @@ public class PlayerStats : MonoBehaviour
     public void AddAmmo(int ammo)
     {
         this.totalAmmo += ammo;
-        OnPlayerGetsAmmo?.Invoke(ammo);//johann añade municion
+        OnPlayerGetsAmmo?.Invoke(ammo);//
     }
 
     #endregion

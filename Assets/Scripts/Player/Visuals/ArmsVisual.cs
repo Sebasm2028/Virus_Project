@@ -19,7 +19,7 @@ public class ArmsVisual : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerStats stats;
     [SerializeField] private UIManager uiManager; // Añadir referencia al UIManager
-
+    [SerializeField] private AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +31,6 @@ public class ArmsVisual : MonoBehaviour
         knifeGO.SetActive(true);
         animator.SetTrigger("Idle_Arms_Trigger");
     }
-
     private void OnDisable()
     {
         combat.OnPlayerStartAttack -= OnPlayerAttack;
@@ -71,10 +70,17 @@ public class ArmsVisual : MonoBehaviour
     private void OnPlayerAttack(AttackType type)
     {
         if (type == AttackType.Fire)
+        {
             animator.SetTrigger("PistolAttack");
+            audioManager.PlayShootgunSound();
+        }
 
         if (type == AttackType.Melee)
+        {
             animator.SetTrigger("KnifeAttack");
+            audioManager.PlayStabbingKnifeSound();
+        }
+           
     }
 
     private void OnWeaponChanged(ActualWeapon weapon)

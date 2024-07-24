@@ -424,6 +424,7 @@ MonoBehaviour:
   knifeGO: {fileID: 2483634925763795511}
   playerMovement: {fileID: 1498545310983833610}
   combat: {fileID: 7147011254655085164}
+  stats: {fileID: 0}
 --- !u!114 &4747184824433642346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +457,7 @@ GameObject:
   - component: {fileID: 479027801}
   - component: {fileID: 535195548}
   - component: {fileID: 535195549}
+  - component: {fileID: 535195550}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -639,11 +641,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthImage: {fileID: 0}
-  healthBackground: {fileID: 0}
   damageImage: {fileID: 0}
-  damageBackground: {fileID: 0}
   maxHealth: 100
-  damagePerHit: 5
+  damagePerHit: 20
+  healPerSecond: 2
+--- !u!136 &535195550
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742302741045533556}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9195090375173110796
 GameObject:
   m_ObjectHideFlags: 0

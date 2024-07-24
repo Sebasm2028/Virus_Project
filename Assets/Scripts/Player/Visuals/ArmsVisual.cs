@@ -18,6 +18,7 @@ public class ArmsVisual : MonoBehaviour
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerStats stats;
+    [SerializeField] private UIManager uiManager; // Añadir referencia al UIManager
 
     // Start is called before the first frame update
     void Start()
@@ -103,7 +104,7 @@ public class ArmsVisual : MonoBehaviour
     /// <param name="damageReceived"></param>
     private void OnPlayerGetDamaged(float damageReceived)
     {
-
+        uiManager.UpdateHealthUI(damageReceived); // Llamar al método del UIManager
     }
 
     #endregion
@@ -116,7 +117,7 @@ public class ArmsVisual : MonoBehaviour
     /// <param name="ammoReceived"></param>
     private void OnPlayerGetAmmo(int ammoReceived)
     {
-
+        uiManager.UpdateAmmoUI(ammoReceived); // Llamar al método del UIManager
     }
 
     #endregion

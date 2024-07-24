@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("Health Properties")]
     [SerializeField] private float healthPoints;
+    [SerializeField] private float maxHealthPoints;
 
     [Header("Weapons Properties")]
     [SerializeField] private int ammoInCartridge;
@@ -51,7 +52,12 @@ public class PlayerStats : MonoBehaviour
 
     public void DamagePlayer(float damage)
     {
-        this.healthPoints -= damage;
+        healthPoints -= damage;
+        healthPoints = Mathf.Clamp(healthPoints, 0, maxHealthPoints);
+
+        AudioManager.Instance.PlayPlayerSound(AudioManager.Instance.playerSource.clip); // Assuming playerSource is set up for damage sound
+
+        OnPlayerDamaged?.Invoke(healthPoints);
     }
 
     #endregion
@@ -61,6 +67,7 @@ public class PlayerStats : MonoBehaviour
     public void AddAmmo(int ammo)
     {
         this.totalAmmo += ammo;
+        OnPlayerGetsAmmo?.Invoke(ammo);//johann añade municion
     }
 
     #endregion

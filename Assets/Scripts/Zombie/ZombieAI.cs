@@ -41,6 +41,8 @@ public class ZombieAI : MonoBehaviour
     {
         BoxOfViewCheck();
         ForgetPlayerLocation();
+
+        //if (zombieMovement.ArrivedToPlayer()) Debug.Log("dasw");
     }
 
     #region AI Field of View
@@ -128,10 +130,17 @@ public class ZombieAI : MonoBehaviour
 
     #endregion
 
+    #region Events
+
+    /// <summary>
+    /// Method that executes when zombie die
+    /// </summary>
     private void OnZombieDied()
     {
         this.enabled = false;
     }
+
+    #endregion
 
     #region Debug
 

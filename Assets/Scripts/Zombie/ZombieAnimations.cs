@@ -25,6 +25,7 @@ public class ZombieAnimations : MonoBehaviour
     void Update()
     {
         Movement();
+        Debug.Log(zombieMovement.GetAgent().velocity.magnitude);
     }
 
     #region Movement

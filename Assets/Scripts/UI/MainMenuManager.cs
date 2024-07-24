@@ -6,6 +6,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject mainMenu;
     public GameObject instructionsMenu;
+    public GameObject optionsMenu;
 
     public void PlayGame()
     {
@@ -21,6 +22,18 @@ public class MainMenuManager : MonoBehaviour
     public void ExitInstructions()
     {
         instructionsMenu.SetActive(false);
+        mainMenu.SetActive(true);
+    }
+
+    public void ShowOptions()
+    {
+        mainMenu.SetActive(false);
+        optionsMenu.SetActive(true);
+    }
+    
+    public void ExitOptions()
+    {
+        optionsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
 }

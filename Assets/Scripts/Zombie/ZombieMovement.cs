@@ -127,6 +127,34 @@ public class ZombieMovement : MonoBehaviour
 
     #endregion
 
+    #region Checkers
+
+    public bool ArrivedToPlayer()
+    {
+        if (!agent.pathPending && target == null)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.25f)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    #endregion
+
     private void OnZombieDied()
     {
         agent.isStopped = true;

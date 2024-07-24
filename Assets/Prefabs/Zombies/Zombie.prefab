@@ -241,19 +241,6 @@ MonoBehaviour:
   minRandomMovementRange: 4
   maxRandomMovementRange: 8
   distanceThreeshold: 10
-  ragdollRBs:
-  - {fileID: 3440006219897588751}
-  - {fileID: 1803895012247330542}
-  - {fileID: 64380793737126060}
-  - {fileID: 3221280891104190385}
-  - {fileID: 3885115060291059247}
-  - {fileID: 615733218061717351}
-  - {fileID: 6535396719784305284}
-  - {fileID: 7813179587228718760}
-  - {fileID: 2249665875408176835}
-  - {fileID: 374582529140596084}
-  - {fileID: 2203973195494090312}
-  lastHitPoint: {x: 0, y: 0, z: 0}
   stats: {fileID: 1153753578950545560}
 --- !u!114 &1153753578950545560
 MonoBehaviour:
@@ -589,7 +576,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

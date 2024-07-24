@@ -131,21 +131,15 @@ public class ZombieMovement : MonoBehaviour
 
     public bool ArrivedToPlayer()
     {
-        if (!agent.pathPending && target == null)
+        if (target != null && agent.hasPath)
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude <= 0.25f)
-                {
+                if (agent.velocity.sqrMagnitude <= 0.25f)
+                {                  
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
+
                 return false;
             }
         }

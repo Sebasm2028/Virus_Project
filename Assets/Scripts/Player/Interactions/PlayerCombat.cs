@@ -33,6 +33,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private LayerMask hitboxLayer;
 
     private PlayerControls playerControl;
+    private PlayerStats playerStats;
 
     #region Events
 
@@ -44,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerStats = GetComponent<PlayerStats>();
         playerControl = new PlayerControls();
         playerControl.Inventory.Enable();
         playerControl.Interactions.Enable();
@@ -85,6 +87,8 @@ public class PlayerCombat : MonoBehaviour
     {      
         if (attackType == AttackType.Fire && canFireShoot)
         {
+            if (playerStats.GetAMMOInCartridge() <= 0) return;
+
             OnPlayerStartAttack?.Invoke(attackType);
             canFireShoot = false;
             StartCoroutine(fireAttackEnumerator());

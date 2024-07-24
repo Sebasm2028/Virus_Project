@@ -17,12 +17,15 @@ public class ArmsVisual : MonoBehaviour
     [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCombat combat;
+    [SerializeField] private PlayerStats stats;
 
     // Start is called before the first frame update
     void Start()
     {
         combat.OnPlayerStartAttack += OnPlayerAttack;
         combat.OnPlayerWeaponChange += OnWeaponChanged;
+        stats.OnPlayerDamaged += OnPlayerGetDamaged;
+        stats.OnPlayerGetsAmmo += OnPlayerGetAmmo;
 
         knifeGO.SetActive(true);
         animator.SetTrigger("Idle_Arms_Trigger");
@@ -88,6 +91,32 @@ public class ArmsVisual : MonoBehaviour
             knifeGO.SetActive(true);
             pistolGO.SetActive(false);
         }
+    }
+
+    #endregion
+
+    #region Health
+
+    /// <summary>
+    /// Triggers when player get damaged
+    /// </summary>
+    /// <param name="damageReceived"></param>
+    private void OnPlayerGetDamaged(float damageReceived)
+    {
+
+    }
+
+    #endregion
+
+    #region Ammo
+
+    /// <summary>
+    /// Triggers when player gets ammo
+    /// </summary>
+    /// <param name="ammoReceived"></param>
+    private void OnPlayerGetAmmo(int ammoReceived)
+    {
+
     }
 
     #endregion

@@ -14,18 +14,19 @@ public class ZombieAnimations : MonoBehaviour
     void Start()
     {
         stats.OnZombieDie += OnZombieDied;
+        stats.OnZombieAttack += OnZombieAttacked;
     }
 
     private void OnDisable()
     {
         stats.OnZombieDie -= OnZombieDied;
+        stats.OnZombieAttack -= OnZombieAttacked;
     }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
-        Debug.Log(zombieMovement.GetAgent().velocity.magnitude);
     }
 
     #region Movement
@@ -37,6 +38,16 @@ public class ZombieAnimations : MonoBehaviour
 
         if (zombieMovement.GetTarget() != null) animator.SetBool("isFollowingPlayer", true);
         else animator.SetBool("isFollowingPlayer", false);
+    }
+
+    #endregion
+
+    #region Attack
+
+    private void OnZombieAttacked()
+    {
+        animator.SetInteger("AttackIndex", Random.Range(0, 4));
+        animator.SetTrigger("Attack");
     }
 
     #endregion

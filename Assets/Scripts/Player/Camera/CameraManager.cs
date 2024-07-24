@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Camera References")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Transform cameraHolderTransform;
 
     private void Awake()
     {
         mainCamera = Camera.main;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()

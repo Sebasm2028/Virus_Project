@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSpeed;
     [SerializeField] private bool isSprinting;
     private MovementState movementState;
-    private Vector3 velocity;
 
     [Header("Jump Properties")]
     [SerializeField] private float jumpForce;
@@ -39,12 +38,15 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Gravity Settings")]
     [SerializeField] private float gravity;
+    [SerializeField] Vector3 velocity;
     [SerializeField] private float airControlReducer;
 
     [Header("Debug")]
     [SerializeField] private Vector2 movementInput;
     [SerializeField] private Vector3 moveDirection;
     [SerializeField] private bool Grounded;
+    [SerializeField] private float magnitude;
+    [SerializeField] private bool Moving;
 
     #region References
 
@@ -86,6 +88,9 @@ public class PlayerMovement : MonoBehaviour
         SpeedManager();
         ApplyGravity();
 
+        //Debug
+        magnitude = controller.velocity.magnitude;
+        Moving = isMoving();
         Grounded = isGrounded();
     }
 
@@ -184,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyGravity()
     {
-        if (isGrounded() && velocity.y < 0)
+        if (isGrounded() && velocity.y < 1)
         {
             velocity.y = 0;
         }
@@ -235,16 +240,25 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <param name="movement"></param>
     /// <returns></returns>
-    private bool isMovingForward(Vector2 movement)
+    public bool isMovingForward(Vector2 movement)
     {
-        return movement.y > 0 && controller.velocity.magnitude > 0.1f;
+        return movement.y > 0 && controller.velocity.magnitude > 1f;
+    }
+
+    /// <summary>
+    /// Detect if player is moving
+    /// </summary>
+    /// <returns></returns>
+    public bool isMoving()
+    {      
+        return movementInput != Vector2.zero && controller.velocity.magnitude > 1;
     }
 
     /// <summary>
     /// Detect if player is grounded
     /// </summary>
     /// <returns></returns>
-    private bool isGrounded()
+    public bool isGrounded()
     {
         return gameObject.scene.GetPhysicsScene().BoxCast(groundCheck.position, groundCheckBoxSize, Vector3.down, out RaycastHit hit, Quaternion.identity, groundRayDistance, groundLayer);
     }

@@ -99,4 +99,11 @@ public class CameraMovement : MonoBehaviour
     {
         playerTransform.rotation = Quaternion.Euler(0, yRotation, 0f);
     }
+
+        // Nuevo método para actualizar la sensibilidad
+    public void UpdateSensitivity(float newSensitivity)
+    {
+        sensX = newSensitivity;
+        sensY = newSensitivity;
+    }
 }

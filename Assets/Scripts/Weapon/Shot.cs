@@ -16,7 +16,7 @@ public class Shot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(0))
         {
             if (Time.time > shotRateTime && GameManager.Instance.gunAmmo > 0)
             {

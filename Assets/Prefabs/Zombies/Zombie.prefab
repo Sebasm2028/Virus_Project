@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 4280382987589173613}
   - component: {fileID: 7459996854062974902}
   - component: {fileID: 8765367359854493689}
+  - component: {fileID: 37164286}
   m_Layer: 8
   m_Name: ZombieModel
   m_TagString: Untagged
@@ -231,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 1.5
-  runSpeed: 4
+  runSpeed: 3
   rb: {fileID: 7459996854062974902}
   rbCollider: {fileID: 8765367359854493689}
   target: {fileID: 0}
@@ -318,6 +319,19 @@ CapsuleCollider:
   m_Height: 1.7967063
   m_Direction: 1
   m_Center: {x: 0, y: 0.8924064, z: 0}
+--- !u!114 &37164286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156406635904541948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3026eeee9298a624abc0a98d1c0de9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 5
 --- !u!1 &5577998290633936217
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,9 +553,11 @@ GameObject:
   m_Component:
   - component: {fileID: 330257956766282458}
   - component: {fileID: 571291203786388978}
+  - component: {fileID: 227948063}
+  - component: {fileID: 227948064}
   m_Layer: 8
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -572,7 +588,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.23
-  m_Speed: 3.5
+  m_Speed: 3.8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -584,6 +600,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &227948063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742768646314952967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4082e0780526ece4b901ba816cc141e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zombieSound: {fileID: 8300000, guid: a6fe1c77720deea479423a0bc136427c, type: 3}
+  maxVolumeDistance: 10
+  minVolumeDistance: 2
+--- !u!114 &227948064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8742768646314952967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3026eeee9298a624abc0a98d1c0de9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 15
 --- !u!1001 &5326000510335680930
 PrefabInstance:
   m_ObjectHideFlags: 0

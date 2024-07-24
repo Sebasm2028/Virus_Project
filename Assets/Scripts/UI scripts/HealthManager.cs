@@ -5,33 +5,26 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    public Image healthImage; // La imagen de la barra de salud
-    public Image damageImage; // La imagen de la barra de daño
+    public Image healthImage; // La imagen de la barra de salud (Filled)
+    public Image damageImage; // La imagen de la barra de daño (Filled)
     public float maxHealth = 100f; // La salud máxima del jugador
     private float currentHealth; // La salud actual del jugador
-    private float damageCooldown = 3f; // Tiempo de espera para regeneración
-    private float damageRegeneration = 4f; // Cantidad de salud regenerada cada cooldown
+    public float damagePerHit = 5f; // Daño por golpe del zombie
+    public float healPerSecond = 2f; // Sanación por segundo
 
     private void Start()
     {
         currentHealth = maxHealth; // Inicializa la salud actual al máximo
         UpdateHealthUI();
-        InvokeRepeating("RegenerateHealth", damageCooldown, damageCooldown); // Repetir regeneración cada cooldown
     }
 
-    public void TakeDamage(float damageAmount)
+    private void Update()
     {
-        currentHealth -= damageAmount; // Reduce la salud actual
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que la salud no baje de 0 ni suba del máximo
-        UpdateHealthUI();
-    }
-
-    private void RegenerateHealth()
-    {
+        // Lógica de sanación gradual
         if (currentHealth < maxHealth)
         {
-            currentHealth += damageRegeneration; // Regenera salud
-            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que la salud no suba del máximo
+            currentHealth += healPerSecond * Time.deltaTime;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
             UpdateHealthUI();
         }
     }
@@ -39,7 +32,25 @@ public class HealthManager : MonoBehaviour
     private void UpdateHealthUI()
     {
         float healthFillAmount = currentHealth / maxHealth;
-        healthImage.rectTransform.localScale = new Vector3(healthFillAmount, 1, 1); // Actualiza la imagen de la barra de salud
+        healthImage.fillAmount = healthFillAmount; // Actualiza la imagen de la barra de salud
         damageImage.fillAmount = 1f - healthFillAmount; // Actualiza la imagen de la barra de daño
+    }
+
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount; // Reduce la salud actual
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegura que la salud no baje de 0 ni suba del máximo
+        UpdateHealthUI();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("OnTriggerEnter called with: " + other.gameObject.name); // Mensaje de depuración
+
+        if (other.CompareTag("Zombie"))
+        {
+            Debug.Log("Player collided with Zombie"); // Mensaje de depuración
+            TakeDamage(damagePerHit);
+        }
     }
 }

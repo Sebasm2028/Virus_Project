@@ -84,49 +84,71 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private void Shoot()
-    {      
-        if (attackType == AttackType.Fire && canFireShoot)
+{
+    if (attackType == AttackType.Fire && canFireShoot)
+    {
+        if (playerStats.GetAMMOInCartridge() <= 0) return;
+
+        OnPlayerStartAttack?.Invoke(attackType);
+        canFireShoot = false;
+        StartCoroutine(fireAttackEnumerator());
+
+        if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, Mathf.Infinity, (defaultLayers | hitboxLayer)))
         {
-            if (playerStats.GetAMMOInCartridge() <= 0) return;
-
-            OnPlayerStartAttack?.Invoke(attackType);
-            canFireShoot = false;
-            StartCoroutine(fireAttackEnumerator());
-
-            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, Mathf.Infinity, (defaultLayers | hitboxLayer)))
+            Debug.Log("Fire attack applied");
+            ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
+            if (zombieHitbox != null)
             {
-                Debug.Log("Fire attack aplied");
-                ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
-                if (zombieHitbox != null)
-                {
-                    ZombieStats stats = hit.collider.GetComponentInParent<ZombieStats>();
-                    if (stats.GetHealthPoints() > 0)
-                        zombieHitbox.ApplyDamage(playerDamage);
-                }
-                Debug.DrawLine(raycastPoint.position, hit.point, Color.red, 3);
+                ZombieStats stats = hit.collider.GetComponentInParent<ZombieStats>();
+                if (stats.GetHealthPoints() > 0)
+                    zombieHitbox.ApplyDamage(playerDamage);
             }
-        }
 
-        if (attackType == AttackType.Melee && canMelee)
-        {
-            OnPlayerStartAttack?.Invoke(attackType);
-            canMelee = false;
-            StartCoroutine(meleeAttackEnumerator());
-
-            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, meleeReach, (defaultLayers | hitboxLayer)))
+            // Detectar y aplicar daño al ZombieNest
+            if (hit.collider.CompareTag("ZombieNest"))
             {
-                Debug.Log("Meelee attack aplied");
-                ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
-                if (zombieHitbox != null)
+                ZombieNest nest = hit.collider.GetComponent<ZombieNest>();
+                if (nest != null)
                 {
-                    ZombieStats stats = hit.collider.GetComponentInParent<ZombieStats>();
-                    if (stats.GetHealthPoints() > 0)
-                        zombieHitbox.ApplyDamage(playerDamage);
+                    nest.TakeDamage((int)playerDamage);
                 }
-                Debug.DrawLine(raycastPoint.position, hit.point, Color.red, 3);
             }
+
+            Debug.DrawLine(raycastPoint.position, hit.point, Color.red, 3);
         }
     }
+
+    if (attackType == AttackType.Melee && canMelee)
+    {
+        OnPlayerStartAttack?.Invoke(attackType);
+        canMelee = false;
+        StartCoroutine(meleeAttackEnumerator());
+
+        if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, meleeReach, (defaultLayers | hitboxLayer)))
+        {
+            Debug.Log("Melee attack applied");
+            ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
+            if (zombieHitbox != null)
+            {
+                ZombieStats stats = hit.collider.GetComponentInParent<ZombieStats>();
+                if (stats.GetHealthPoints() > 0)
+                    zombieHitbox.ApplyDamage(playerDamage);
+            }
+
+            // Detectar y aplicar daño al ZombieNest
+            if (hit.collider.CompareTag("ZombieNest"))
+            {
+                ZombieNest nest = hit.collider.GetComponent<ZombieNest>();
+                if (nest != null)
+                {
+                    nest.TakeDamage((int)playerDamage);
+                }
+            }
+
+            Debug.DrawLine(raycastPoint.position, hit.point, Color.red, 3);
+        }
+    }
+}
 
     #region Cooldowns
 

@@ -6,6 +6,7 @@ public class ZombieNest : MonoBehaviour
     public int maxHealth = 10;
     private int currentHealth;
     public Image healthImage; // UI Slider para mostrar la vida
+    public GameManager gameManager;
 
     private void Start()
     {
@@ -34,7 +35,7 @@ public class ZombieNest : MonoBehaviour
 
     private void DestroyNest()
     {
-        Debug.Log("Nest destroyed! You win!");
-        // Lógica adicional como animación de destrucción, mensaje de victoria, etc.
+        //Debug.Log("Nest destroyed! You win!");
+        gameManager.Win();
     }
 }

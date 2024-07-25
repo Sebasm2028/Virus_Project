@@ -14,6 +14,9 @@ public class ArmsVisual : MonoBehaviour
     [SerializeField] private GameObject pistolGO;
     [SerializeField] private GameObject knifeGO;
 
+    [Header("Particle Effects")]
+    [SerializeField] private GameObject pistolAttackParticles;
+
     [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCombat combat;
@@ -73,6 +76,12 @@ public class ArmsVisual : MonoBehaviour
         {
             animator.SetTrigger("PistolAttack");
             audioManager.PlayShootgunSound();
+
+            if (pistolAttackParticles != null)
+            {
+                // Instanciar las partículas en la posición del arma de fuego
+                Instantiate(pistolAttackParticles, pistolGO.transform.position, pistolGO.transform.rotation);
+            }
         }
 
         if (type == AttackType.Melee)

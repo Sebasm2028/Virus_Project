@@ -58,7 +58,6 @@ public class UIManager : MonoBehaviour
     private void ShowDamageEffect(float damage)
     {
         StartCoroutine(FadeDamageOverlay());
-        AudioManager.Instance.PlayPlayerSound(AudioManager.Instance.playerSource.clip); // Reproduce el sonido de daño
     }
 
     private IEnumerator FadeDamageOverlay()

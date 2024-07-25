@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity;
     [SerializeField] Vector3 velocity;
     [SerializeField] private float airControlReducer;
+    bool wasInAir = false;
 
     [Header("Debug")]
     [SerializeField] private Vector2 movementInput;
@@ -47,6 +49,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool Grounded;
     [SerializeField] private float magnitude;
     [SerializeField] private bool Moving;
+
+    #region Events
+
+    public event Action OnPlayerJump;
+    public event Action OnPlayerLand;
+
+    #endregion
 
     #region References
 
@@ -179,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
     {     
         if (_jump && isGrounded() && canJump)
         {
+            OnPlayerJump?.Invoke();
             velocity.y = Mathf.Sqrt(jumpForce * -5f * gravity);
             canJump = false;
             _jump = false;
@@ -198,6 +208,13 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
+
+        if (wasInAir && isGrounded())
+        {
+            OnPlayerLand?.Invoke();
+        }
+
+        wasInAir = !isGrounded();
     }
 
     private IEnumerator CrouchCoroutine()

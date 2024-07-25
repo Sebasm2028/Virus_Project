@@ -67,12 +67,6 @@ public class PlayerStats : MonoBehaviour
         healthPoints -= damage;
         healthPoints = Mathf.Clamp(healthPoints, 0, maxHealthPoints);
 
-        // Reproducir el sonido de daño usando AudioManager
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayHurtSound(); // Reproduce el sonido de daño
-        }
-
         // Activar el efecto de daño
         if (damageEffect != null)
         {

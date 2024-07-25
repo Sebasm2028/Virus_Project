@@ -1,12 +1,22 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource enemySource;
+    [SerializeField] private AudioSource playerSource;
+    [SerializeField] private AudioSource alarmSource;
+    [SerializeField] private AudioSource hurtSource;
+    [SerializeField] private AudioSource stabbingKnifeSource; // Nuevo AudioSource para el cuchillo
+    [SerializeField] private AudioSource shootgunSource; // Nuevo AudioSource para la pistola
 
-    public AudioSource musicSource, sfxSource, enemySource, playerSource, alarmSource, hurtSource;
-    public AudioSource stabbingKnifeSource; // Nuevo AudioSource para el cuchillo
-    public AudioSource shootgunSource; // Nuevo AudioSource para la pistola
+    [Header("Audio Mixers")]
+    [SerializeField] private AudioMixer master;
+
+    public static AudioManager Instance;
 
     private void Awake()
     {

@@ -52,8 +52,13 @@ public class GameManager : MonoBehaviour
     {
         GameObject go = Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
         playerRef = go;
+
         CameraMovement cameraMovement = playerRef.GetComponentInChildren<CameraMovement>();
-        cameraMovement.SetSens(playerSens);
+        if (playerSens != Vector2.zero)
+            cameraMovement.SetSens(playerSens);
+        else
+            cameraMovement.SetSens(new Vector2(0.5f, 0.5f));
+
     }
 
     #endregion

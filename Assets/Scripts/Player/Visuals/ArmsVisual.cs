@@ -22,12 +22,6 @@ public class ArmsVisual : MonoBehaviour
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerStats stats;
     [SerializeField] private UIManager uiManager;
-    [SerializeField] private AudioManager audioManager;
-
-    private void Awake()
-    {
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -84,22 +78,21 @@ public class ArmsVisual : MonoBehaviour
     {
         if (type == AttackType.Fire)
         {
-            animator.SetTrigger("PistolAttack");
-            audioManager.PlayShootgunSound();
-
-            if (pistolAttackParticles != null)
+            if (stats.GetAMMOInCartridge() > 0)
             {
-                // Instanciar las partículas en la posición del arma de fuego
-                Instantiate(pistolAttackParticles, pistolGO.transform.position, pistolGO.transform.rotation);
+                animator.SetTrigger("PistolAttack");
+
+                if (pistolAttackParticles != null)
+                {
+                    // Instanciar las partículas en la posición del arma de fuego
+                    Instantiate(pistolAttackParticles, pistolGO.transform.position, pistolGO.transform.rotation);
+                }
             }
         }
 
         if (type == AttackType.Melee)
-        {
             animator.SetTrigger("KnifeAttack");
-            audioManager.PlayStabbingKnifeSound();
-        }
-           
+
     }
 
     /// <summary>

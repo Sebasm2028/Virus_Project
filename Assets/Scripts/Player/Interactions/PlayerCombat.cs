@@ -87,9 +87,14 @@ public class PlayerCombat : MonoBehaviour
     {      
         if (attackType == AttackType.Fire && canFireShoot)
         {
-            if (playerStats.GetAMMOInCartridge() <= 0) return;
+            if (playerStats.GetAMMOInCartridge() <= 0)
+            {
+                canFireShoot = false;
+                StartCoroutine(fireAttackEnumerator());
+                OnPlayerStartAttack?.Invoke(attackType);
+                return;
+            }
 
-            OnPlayerStartAttack?.Invoke(attackType);
             canFireShoot = false;
             StartCoroutine(fireAttackEnumerator());
 

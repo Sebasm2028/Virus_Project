@@ -14,11 +14,15 @@ public class ArmsVisual : MonoBehaviour
     [SerializeField] private GameObject pistolGO;
     [SerializeField] private GameObject knifeGO;
 
+    [Header("Particle Effects")]
+    [SerializeField] private GameObject pistolAttackParticles;
+
     [Header("Script References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerStats stats;
-
+    [SerializeField] private UIManager uiManager; // Añadir referencia al UIManager
+    [SerializeField] private AudioManager audioManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +34,6 @@ public class ArmsVisual : MonoBehaviour
         knifeGO.SetActive(true);
         animator.SetTrigger("Idle_Arms_Trigger");
     }
-
     private void OnDisable()
     {
         combat.OnPlayerStartAttack -= OnPlayerAttack;
@@ -74,10 +77,23 @@ public class ArmsVisual : MonoBehaviour
     private void OnPlayerAttack(AttackType type)
     {
         if (type == AttackType.Fire)
+        {
             animator.SetTrigger("PistolAttack");
+            audioManager.PlayShootgunSound();
+
+            if (pistolAttackParticles != null)
+            {
+                // Instanciar las partículas en la posición del arma de fuego
+                Instantiate(pistolAttackParticles, pistolGO.transform.position, pistolGO.transform.rotation);
+            }
+        }
 
         if (type == AttackType.Melee)
+        {
             animator.SetTrigger("KnifeAttack");
+            audioManager.PlayStabbingKnifeSound();
+        }
+           
     }
 
     /// <summary>
@@ -111,7 +127,7 @@ public class ArmsVisual : MonoBehaviour
     /// <param name="damageReceived"></param>
     private void OnPlayerGetDamaged(float damageReceived)
     {
-
+        uiManager.UpdateHealthUI(damageReceived); // Llamar al método del UIManager
     }
 
     #endregion
@@ -124,7 +140,7 @@ public class ArmsVisual : MonoBehaviour
     /// <param name="ammoReceived"></param>
     private void OnPlayerGetAmmo(int ammoReceived)
     {
-
+        uiManager.UpdateAmmoUI(ammoReceived); // Llamar al método del UIManager
     }
 
     #endregion

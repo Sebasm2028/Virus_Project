@@ -40,6 +40,8 @@ public class ZombieAI : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.gameState == GameState.Paused) return;
+
         BoxOfViewCheck();
         ForgetPlayerLocation();
     }

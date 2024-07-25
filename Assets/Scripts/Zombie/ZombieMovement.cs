@@ -54,6 +54,8 @@ public class ZombieMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.gameState == GameState.Paused) return;
+
         //ForgetPlayerLocation();
         Movement();
     }

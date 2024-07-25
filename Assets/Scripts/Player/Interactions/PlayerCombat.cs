@@ -11,6 +11,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float playerDamage;
     [SerializeField] private AttackType attackType;
     [SerializeField] private LayerMask zombieLayer;
+    [SerializeField] private LayerMask nestLayer;
 
     [Header("Melee Properties")]
     [SerializeField] private float meleeReach;
@@ -55,7 +56,7 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerStats.isDeath) return;
+        if (GameManager.Instance.gameState == GameState.Paused) return;
 
         ChangeWeapons();
 
@@ -87,7 +88,7 @@ public class PlayerCombat : MonoBehaviour
     }
 
     private void Shoot()
-    {      
+    {     
         if (attackType == AttackType.Fire && canFireShoot)
         {
             if (playerStats.GetTotalAmmo() <= 0)
@@ -103,9 +104,16 @@ public class PlayerCombat : MonoBehaviour
             StartCoroutine(fireAttackEnumerator());
             OnPlayerStartAttack?.Invoke(attackType);
 
-            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, Mathf.Infinity, (defaultLayers | hitboxLayer)))
+            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, Mathf.Infinity, (defaultLayers | hitboxLayer | nestLayer)))
             {
                 Debug.Log("Fire attack aplied");
+
+                ZombieNest zombieNest = hit.collider.gameObject.GetComponent<ZombieNest>();
+                if (zombieNest != null)
+                {
+                    zombieNest.TakeDamage(playerDamage);
+                }
+
                 ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
                 if (zombieHitbox != null)
                 {
@@ -123,9 +131,16 @@ public class PlayerCombat : MonoBehaviour
             canMelee = false;
             StartCoroutine(meleeAttackEnumerator());
 
-            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, meleeReach, (defaultLayers | hitboxLayer)))
+            if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, meleeReach, (defaultLayers | hitboxLayer | nestLayer)))
             {
                 Debug.Log("Meelee attack aplied");
+
+                ZombieNest zombieNest = hit.collider.gameObject.GetComponent<ZombieNest>();
+                if (zombieNest != null)
+                {
+                    zombieNest.TakeDamage(playerDamage);
+                }
+
                 ZombieHitbox zombieHitbox = hit.collider.gameObject.GetComponent<ZombieHitbox>();
                 if (zombieHitbox != null)
                 {

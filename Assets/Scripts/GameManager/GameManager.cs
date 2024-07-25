@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("GameLoop Properties")]
     [SerializeField] private float timeToComplete;
     public GameCanvasUI gameCanvasUI;
+    public ZombieNest zombieNest;
 
     [Header("Player Properties")]
     [SerializeField] private GameObject playerPrefab;
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        GameStateManager(gameState);
         CheckDeath();
     }
 
@@ -84,20 +84,31 @@ public class GameManager : MonoBehaviour
 
             if (stats.isDeath)
             {
+                gameState = GameState.Paused;
+                playerSpawned = false;
                 gameCanvasUI.EnableGameOverScreen();
             }
+        }
 
+        if (zombieNest != null)
+        {
+            if (zombieNest.isDead)
+            {
+                gameState = GameState.Paused;
+                playerSpawned = false;
+                gameCanvasUI.EnableGameWinScreen();
+            }
         }
     }
 
-    private void GameStateManager(GameState state)
+    public void CheckGameOver()
     {
-        if (state == GameState.Paused) { Time.timeScale = 0; }
-    }
-
-    public void ResetStatus()
-    {
-
+        if (playerRef != null)
+        {
+            gameState = GameState.Paused;
+            playerSpawned = false;
+            gameCanvasUI.EnableGameOverScreen();
+        }
     }
 
     #endregion
@@ -111,6 +122,7 @@ public class GameManager : MonoBehaviour
             gameState = GameState.Playing;
             Transform spawnPoint = GameObject.Find("SpawnPoint").transform;
             gameCanvasUI = GameObject.Find("GameCanvas").GetComponent<GameCanvasUI>();
+            zombieNest = GameObject.Find("ZombieNest").GetComponent<ZombieNest>();
 
             if (!playerSpawned && gameCanvasUI != null)
             {

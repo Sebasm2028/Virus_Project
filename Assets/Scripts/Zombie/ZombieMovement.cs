@@ -54,7 +54,7 @@ public class ZombieMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ForgetPlayerLocation();
+        //ForgetPlayerLocation();
         Movement();
     }
 
@@ -156,7 +156,8 @@ public class ZombieMovement : MonoBehaviour
 
     private void OnZombieAttacked()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        if (target == null)
+            target = GameManager.Instance.GetPlayerRef().transform;
     }
 
     private void OnZombieDied()

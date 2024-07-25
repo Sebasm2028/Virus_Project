@@ -27,13 +27,24 @@ public class CameraMovement : MonoBehaviour
     [Space]
 
     #region References
-    [SerializeField ]private Transform playerTransform;
+    [SerializeField ] private Transform playerTransform;
     private PlayerControls playerControls;
     #endregion
 
-    private void Awake()
+    #region Getter / Setter
+
+    public Vector2 GetSens() { return new Vector2(sensX, sensY); }
+
+    public void SetSens(Vector2 sens)
     {
-        mainCamera = Camera.main;
+        sensX = sens.x;
+        sensY = sens.y;
+    }
+
+    #endregion
+
+    private void Start()
+    {
         playerControls = new PlayerControls();
         playerControls.Camera.Enable();
     }

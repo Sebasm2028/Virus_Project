@@ -1,40 +1,71 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieSound : MonoBehaviour
 {
-    public AudioClip zombieSound; // El sonido continuo del zombie
-    private Transform player; // Referencia al jugador
-    public float maxVolumeDistance = 10f; // Distancia a la que el sonido del zombie está a volumen máximo
-    public float minVolumeDistance = 2f; // Distancia a la que el sonido del zombie está a volumen mínimo
+    [SerializeField] private AudioSource source;
+
+    [Header("Movement")]
+    [SerializeField] private List<AudioClip> walkSounds;
+
+    [Header("Grounts")]
+    [SerializeField] private List<AudioClip> grountSounds;
+
+    [Header("Combat")]
+    [SerializeField] private List<AudioClip> attackSounds;
+
+    [Header("Script References")]
+    [SerializeField] private ZombieMovement movement;
+    [SerializeField] private ZombieStats stats;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        AudioManager.Instance.PlayEnemySound(zombieSound);
+        stats.OnZombieAttack += OnZombieAttacks;
+
+        StartCoroutine(GrountCoroutine());
+    }
+
+    private void OnDisable()
+    {
+        stats.OnZombieAttack -= OnZombieAttacks;
     }
 
     private void Update()
     {
-        AdjustVolumeBasedOnDistance();
+        Movement();
     }
 
-    private void AdjustVolumeBasedOnDistance()
+    private void Movement()
     {
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance < minVolumeDistance)
+        if (movement.GetAgent().velocity.magnitude > 0.1f)
         {
-            AudioManager.Instance.SetEnemyVolume(1f); // Volumen máximo
-        }
-        else if (distance > maxVolumeDistance)
-        {
-            AudioManager.Instance.SetEnemyVolume(0f); // Volumen mínimo
-        }
-        else
-        {
-            // Ajustar volumen basado en la distancia
-            float normalizedDistance = (distance - minVolumeDistance) / (maxVolumeDistance - minVolumeDistance);
-            AudioManager.Instance.SetEnemyVolume(1f - normalizedDistance); // Invertir para que el volumen disminuya con la distancia
+            if (!source.isPlaying)
+            {
+                source.PlayOneShot(walkSounds[Random.Range(0, walkSounds.Count)]);
+            }
         }
     }
+
+    private IEnumerator GrountCoroutine()
+    {
+        while (true)
+        {
+            if (!source.isPlaying)
+            {
+                source.PlayOneShot(grountSounds[Random.Range(0, grountSounds.Count)]);
+            }
+
+            yield return new WaitForSeconds(Random.Range(2, 6));
+        }
+    }
+
+    private void OnZombieAttacks()
+    {
+        if (!source.isPlaying)
+        {
+            source.PlayOneShot(attackSounds[0]);
+        }
+    }
+
 }

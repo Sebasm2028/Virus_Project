@@ -1,14 +1,22 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource enemySource;
+    [SerializeField] private AudioSource playerSource;
+    [SerializeField] private AudioSource alarmSource;
+    [SerializeField] private AudioSource hurtSource;
+    [SerializeField] private AudioSource stabbingKnifeSource; // Nuevo AudioSource para el cuchillo
+    [SerializeField] private AudioSource shootgunSource; // Nuevo AudioSource para la pistola
 
-    public AudioSource musicSource;
-    public AudioSource sfxSource;
-    public AudioSource enemySource;
-    public AudioSource playerSource; // Nuevo AudioSource para el sonido del jugador
-    public AudioSource alarmSource; // Nuevo AudioSource para la alarma
+    [Header("Audio Mixers")]
+    [SerializeField] private AudioMixer master;
+
+    public static AudioManager Instance;
 
     private void Awake()
     {
@@ -63,7 +71,28 @@ public class AudioManager : MonoBehaviour
     {
         playerSource.Stop();
     }
+    public void PlayHurtSound()
+    {
+        if (hurtSource != null)
+        {
+            hurtSource.Play();
+        }
+    }
+    public void PlayStabbingKnifeSound()
+    {
+        if (stabbingKnifeSource != null)
+        {
+            stabbingKnifeSource.Play();
+        }
+    }
 
+    public void PlayShootgunSound()
+    {
+        if (shootgunSource != null)
+        {
+            shootgunSource.Play();
+        }
+    }
     public void SetMusicVolume(float volume)
     {
         musicSource.volume = volume;

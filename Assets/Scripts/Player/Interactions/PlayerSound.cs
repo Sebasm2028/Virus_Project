@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class PlayerSound : MonoBehaviour
 {
-    public AudioClip walkSound;
+    [Header("Footsteps")]
+    [SerializeField] private AudioClip walkSound;
+
+    [Header("Script References")]
+    [SerializeField] private PlayerMovement movement;
 
     private void Update()
     {
-        if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+        if (movement.isMoving() && movement.isGrounded())
         {
             if (!AudioManager.Instance.playerSource.isPlaying)
             {

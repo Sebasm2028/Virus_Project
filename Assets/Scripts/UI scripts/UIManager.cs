@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour
 {
     [Header("Health UI Elements")]
     [SerializeField] private Image healthImage;
-    [SerializeField] private Image damageImage;
 
     [Header("Ammo UI Elements")]
     [SerializeField] private TextMeshProUGUI ammoText;
@@ -24,28 +23,27 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         // Encuentra el componente PlayerStats en el jugador
-        playerStats = FindObjectOfType<PlayerStats>();
+        playerStats = GetComponentInParent<PlayerStats>();
 
         // Suscribirse a los eventos del jugador
-        playerStats.OnPlayerDamaged += UpdateHealthUI;
         playerStats.OnPlayerDamaged += ShowDamageEffect;
-        playerStats.OnPlayerGetsAmmo += UpdateAmmoUI;
 
         // Inicializar la UI
-        UpdateHealthUI(0);
-        UpdateAmmoUI(0);
     }
 
-    public void UpdateHealthUI(float damage)
+    private void Update()
     {
-        float healthPercentage = playerStats.GetHP() / 100f; // Asumiendo que 100 es el valor máximo de salud
-        healthImage.fillAmount = healthPercentage;
-
-        // Si quieres animar el daño, puedes hacerlo aquí
-        damageImage.fillAmount = Mathf.Lerp(damageImage.fillAmount, healthPercentage, 0.1f); // Ajusta el 0.1f para la velocidad de animación
+        UpdateHealthUI();
+        UpdateAmmoUI();
     }
 
-    public void UpdateAmmoUI(int ammo)
+    public void UpdateHealthUI()
+    {
+        float healthPercentage = playerStats.GetHP() / playerStats.GetMaxHealth();
+        healthImage.fillAmount = healthPercentage;
+    }
+
+    public void UpdateAmmoUI()
     {
         ammoText.text = playerStats.GetAMMOInCartridge().ToString() + " / " + playerStats.GetTotalAmmo().ToString();
 
@@ -81,8 +79,6 @@ public class UIManager : MonoBehaviour
     private void OnDestroy()
     {
         // Desuscribirse de los eventos cuando el objeto se destruye
-        playerStats.OnPlayerDamaged -= UpdateHealthUI;
         playerStats.OnPlayerDamaged -= ShowDamageEffect;
-        playerStats.OnPlayerGetsAmmo -= UpdateAmmoUI;
     }
 }

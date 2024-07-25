@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource, sfxSource, enemySource, playerSource, alarmSource, hurtSource;
     public AudioSource stabbingKnifeSource; // Nuevo AudioSource para el cuchillo
     public AudioSource shootgunSource; // Nuevo AudioSource para la pistola
+
     private void Awake()
     {
         if (Instance == null)

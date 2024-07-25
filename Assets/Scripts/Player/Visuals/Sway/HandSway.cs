@@ -12,6 +12,7 @@ public class HandSway : MonoBehaviour
     [SerializeField] private float handMultiplier;
     [SerializeField] private float itemMultiplier;
 
+    private CameraMovement cameraMovement;
     private Quaternion defaultRotation;
     private PlayerControls playerInput;
 
@@ -20,6 +21,7 @@ public class HandSway : MonoBehaviour
         defaultRotation = transform.localRotation;
         playerInput = new PlayerControls();
         playerInput.Camera.Enable();
+        cameraMovement = GetComponentInParent<CameraMovement>();
 
     }
 
@@ -33,8 +35,8 @@ public class HandSway : MonoBehaviour
         Vector2 mouseLook = playerInput.Camera.CameraLook.ReadValue<Vector2>();
 
         // get mouse input
-        float mouseX = mouseLook.x * getSwayEffect() * 1;
-        float mouseY = mouseLook.y * getSwayEffect() * 1;
+        float mouseX = mouseLook.x * getSwayEffect() * cameraMovement.GetSens().x;
+        float mouseY = mouseLook.y * getSwayEffect() * cameraMovement.GetSens().y;
 
         // calculate target rotation
         Quaternion rotationX = Quaternion.AngleAxis(-mouseY, Vector3.right);

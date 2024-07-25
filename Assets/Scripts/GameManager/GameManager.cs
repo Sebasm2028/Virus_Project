@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string lobbyScene;
     [SerializeField] private string gameScene;
 
+    [Header("Player Properties")]
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Vector2 playerSens;
+
     public static GameManager Instance;
 
     private void Awake()

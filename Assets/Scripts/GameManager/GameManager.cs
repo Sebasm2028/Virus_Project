@@ -6,11 +6,15 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Game State")]
-    [SerializeField] private GameState gameState;
+    public GameState gameState;
 
     [Header("Scene Changer")]
     [SerializeField] private string lobbyScene;
     [SerializeField] private string gameScene;
+
+    [Header("GameLoop Properties")]
+    [SerializeField] private float timeToComplete;
+    public GameCanvasUI gameCanvasUI;
 
     [Header("Player Properties")]
     [SerializeField] private GameObject playerPrefab;
@@ -18,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2 playerSens;
     [SerializeField] private float musicLevel;
     [SerializeField] private float soundLevel;
+    bool playerSpawned = false;
 
     public static GameManager Instance;
 
@@ -44,6 +49,12 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    private void Update()
+    {
+        GameStateManager(gameState);
+        CheckDeath();
+    }
+
     #region Player
 
     public GameObject GetPlayerRef() { return playerRef; }
@@ -63,6 +74,34 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region Game Manager
+
+    private void CheckDeath()
+    {
+        if (playerRef != null)
+        {
+            PlayerStats stats = playerRef.GetComponent<PlayerStats>();
+
+            if (stats.isDeath)
+            {
+                gameCanvasUI.EnableGameOverScreen();
+            }
+
+        }
+    }
+
+    private void GameStateManager(GameState state)
+    {
+        if (state == GameState.Paused) { Time.timeScale = 0; }
+    }
+
+    public void ResetStatus()
+    {
+
+    }
+
+    #endregion
+
     #region Scenes
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -71,7 +110,14 @@ public class GameManager : MonoBehaviour
         {
             gameState = GameState.Playing;
             Transform spawnPoint = GameObject.Find("SpawnPoint").transform;
-            SpawnPlayer(spawnPoint);
+            gameCanvasUI = GameObject.Find("GameCanvas").GetComponent<GameCanvasUI>();
+
+            if (!playerSpawned && gameCanvasUI != null)
+            {
+                gameCanvasUI.Initialize(timeToComplete);
+                playerSpawned = true;
+                SpawnPlayer(spawnPoint);
+            }
         }
         else if (scene.name == lobbyScene) gameState = GameState.Lobby;
     }

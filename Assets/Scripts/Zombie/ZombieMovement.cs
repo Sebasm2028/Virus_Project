@@ -69,15 +69,18 @@ public class ZombieMovement : MonoBehaviour
         {
             if (target != null)
             {
-                agent.speed = runSpeed;
-                agent.destination = target.position;
-                // Calcula la nueva posición y rotación basadas en el agente
-                Vector3 newPosition = agent.transform.position;
-                Quaternion newRotation = agent.transform.rotation;
+                if (!target.GetComponent<PlayerStats>().isDeath)
+                {
+                    agent.speed = runSpeed;
+                    agent.destination = target.position;
+                    // Calcula la nueva posición y rotación basadas en el agente
+                    Vector3 newPosition = agent.transform.position;
+                    Quaternion newRotation = agent.transform.rotation;
 
-                // Mueve el Rigidbody a la nueva posición
-                rb.MovePosition(newPosition);
-                //rb.MoveRotation(newRotation);
+                    // Mueve el Rigidbody a la nueva posición
+                    rb.MovePosition(newPosition);
+                    //rb.MoveRotation(newRotation);
+                }
             }
             else
             {

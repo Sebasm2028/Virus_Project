@@ -111,7 +111,7 @@ public class PlayerSound : MonoBehaviour
             playerSource.PlayOneShot(knifeAttackSound);
         else if (type == AttackType.Fire)
         {
-            if (stats.GetAMMOInCartridge() <= 0)
+            if (stats.GetTotalAmmo() <= 0)
             {
                 playerSource.PlayOneShot(pistolEmptySound);
             }        

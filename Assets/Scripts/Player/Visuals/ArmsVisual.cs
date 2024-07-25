@@ -78,7 +78,7 @@ public class ArmsVisual : MonoBehaviour
     {
         if (type == AttackType.Fire)
         {
-            if (stats.GetAMMOInCartridge() > 0)
+            if (stats.GetTotalAmmo() > 0)
             {
                 animator.SetTrigger("PistolAttack");
 

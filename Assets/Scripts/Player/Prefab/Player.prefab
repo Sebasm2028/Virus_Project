@@ -971,8 +971,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 111.30005, y: 38.1}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 19.962158, y: 38.100006}
+  m_SizeDelta: {x: 262.262, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1004588112979468814
 CanvasRenderer:
@@ -1002,7 +1002,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 99 / 99
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1358,7 +1358,7 @@ MonoBehaviour:
   canMelee: 1
   fireShootCooldown: 1
   canFireShoot: 1
-  weaponSwapCooldown: 0
+  weaponSwapCooldown: 0.25
   weapon: 0
   canSwapWeapon: 1
   defaultLayers:
@@ -1381,9 +1381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoints: 10
   maxHealthPoints: 10
-  healPerSecond: 2
+  healPerSecond: 0.5
   regenDelay: 3
-  ammoInCartridge: 0
   totalAmmo: 0
   damageEffect: {fileID: 5433600783935625916}
 --- !u!114 &6851926010423542975
@@ -1538,7 +1537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -104.4, y: 0}
+  m_AnchoredPosition: {x: -258, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7122153548267346705
@@ -1643,7 +1642,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1023
+    m_Bits: 5119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

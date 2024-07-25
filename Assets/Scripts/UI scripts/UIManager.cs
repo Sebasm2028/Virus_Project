@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class UIManager : MonoBehaviour
 {
@@ -45,12 +46,12 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmoUI()
     {
-        ammoText.text = playerStats.GetAMMOInCartridge().ToString() + " / " + playerStats.GetTotalAmmo().ToString();
+        ammoText.text = $"{playerStats.GetTotalAmmo()}";
 
         // Si usas una barra de munición
         if (ammoImage != null)
         {
-            float ammoPercentage = (float)playerStats.GetAMMOInCartridge() / 100f; // Ajusta el 100 según el valor máximo de munición en el cartucho
+            float ammoPercentage = (float)playerStats.GetTotalAmmo() / 100f; // Ajusta el 100 según el valor máximo de munición en el cartucho
             ammoImage.fillAmount = ammoPercentage;
         }
     }

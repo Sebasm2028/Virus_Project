@@ -10,13 +10,12 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float maxHealthPoints;
     [SerializeField] private float healPerSecond = 2f; // Sanación por segundo
     [SerializeField] private float regenDelay;
+    public bool isDeath = false;
     private bool canRegen = true;
 
     [Header("Weapons Properties")]
-    [SerializeField] private int ammoInCartridge;
     [SerializeField] private int totalAmmo;
 
-    
     [Header("Damage Effect")]
     [SerializeField] private DamageEffect damageEffect;
 
@@ -25,6 +24,8 @@ public class PlayerStats : MonoBehaviour
     public event Action<float> OnPlayerDamaged;
 
     public event Action<int> OnPlayerGetsAmmo;
+
+    public event Action OnPlayerDie;
 
     #endregion
 
@@ -38,10 +39,6 @@ public class PlayerStats : MonoBehaviour
     public float GetMaxHealth() { return maxHealthPoints; }
 
     public void SetMaxHealth() { this.maxHealthPoints = healthPoints; }
-
-    public float GetAMMOInCartridge() { return ammoInCartridge; }
-
-    public void SetAmmoInCartrige(int ammoInCartrige) { this.ammoInCartridge = ammoInCartrige; }
 
     public int GetTotalAmmo() { return totalAmmo; }
 
@@ -57,6 +54,7 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (healthPoints <= 0) isDeath = true;
         RegenHP();
     }
 
@@ -103,6 +101,8 @@ public class PlayerStats : MonoBehaviour
         this.totalAmmo += ammo;
         OnPlayerGetsAmmo?.Invoke(ammo);//
     }
+
+    public void RemoveAmmo(int ammo) { this.totalAmmo -= ammo; }
 
     #endregion
 }

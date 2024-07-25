@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -54,6 +55,8 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerStats.isDeath) return;
+
         ChangeWeapons();
 
         if (playerControl.Interactions.Attack.IsPressed())
@@ -87,7 +90,7 @@ public class PlayerCombat : MonoBehaviour
     {      
         if (attackType == AttackType.Fire && canFireShoot)
         {
-            if (playerStats.GetAMMOInCartridge() <= 0)
+            if (playerStats.GetTotalAmmo() <= 0)
             {
                 canFireShoot = false;
                 StartCoroutine(fireAttackEnumerator());
@@ -96,7 +99,9 @@ public class PlayerCombat : MonoBehaviour
             }
 
             canFireShoot = false;
+            playerStats.RemoveAmmo(1);
             StartCoroutine(fireAttackEnumerator());
+            OnPlayerStartAttack?.Invoke(attackType);
 
             if (Physics.Raycast(raycastPoint.position, raycastPoint.transform.forward, out RaycastHit hit, Mathf.Infinity, (defaultLayers | hitboxLayer)))
             {

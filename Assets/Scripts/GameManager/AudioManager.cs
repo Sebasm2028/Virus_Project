@@ -51,5 +51,29 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void ChangeMasterVolume(float volume)
+    {
+        if (master != null)
+        {
+            master.SetFloat("Master", Mathf.Log10(volume) * 20);
+        }
+    }
+
+    public void ChangeMusicVolume(float volume)
+    {
+        if (master != null)
+        {
+            master.SetFloat("Music", Mathf.Log10(volume) * 20);
+        }
+    }
+
+    public void ChangeSFXVolume(float volume)
+    {
+        if (master != null)
+        {
+            master.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        }
+    }
+
 }
 

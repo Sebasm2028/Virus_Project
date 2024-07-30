@@ -72,6 +72,16 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void SetSensX(float x)
+    {
+        playerSens.x = x;
+    }
+
+    public void SetSensY(float y)
+    {
+        playerSens.y = y;
+    }
+
     #endregion
 
     #region Game Manager
